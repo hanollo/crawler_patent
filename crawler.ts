@@ -111,7 +111,10 @@ async function crawlWebsiteWithPost(corp_no: string): Promise<void> {
   }
 }
 
-crawlWebsiteWithPost('1101113870098'); //리디
-crawlWebsiteWithPost('1101115119080'); //비바리퍼블리카(토스)
-crawlWebsiteWithPost('1101114834853'); //두나무
+//리디, 비바리퍼블리카(토스), 두나무 법인번호 목록
+const corp_nos = ['1101113870098', '1101115119080', '1101114834853'];
+
+corp_nos.map(corp_nos => {
+  crawlWebsiteWithPost(corp_nos);
+})
 
