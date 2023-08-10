@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { parse } from 'node-html-parser';
-import { createConnection } from 'mysql2/promise';
+import { mysqlConnect } from './connect';
 
 interface patent {
   company: string; // 회사명
@@ -91,12 +91,7 @@ async function crawlWebsiteWithPost(corp_no: string): Promise<void> {
         rows.push(row);
       });
 
-    const pool = await createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: '1234abcd',
-      database: 'mycompany',
-    });
+    const pool = await mysqlConnect();
 
     async function insertRows() {
       await Promise.all(rows.map(async (row) => {
@@ -105,7 +100,7 @@ async function crawlWebsiteWithPost(corp_no: string): Promise<void> {
     }
 
     insertRows().then(() => {
-      console.log('Insertion complete.');
+      console.log(`Insertion complete : ${rows.length} rows`);
     }).catch((error) => {
       console.error('Error inserting rows:', error);
     });
