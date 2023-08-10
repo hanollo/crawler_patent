@@ -3,27 +3,22 @@ import { parse } from 'node-html-parser';
 import { createConnection } from 'mysql2/promise';
 
 interface patent {
-  company: string;
-  corp_no : string;
-  title: string;
-  application_number: string;
-  application_date_ymd: string;
-  quote: number;
-  summary: string;
+  company: string; // 회사명
+  corp_no : string; // 법인번호
+  title: string; // 특허명
+  application_number: string; // 출원번호
+  application_date_ymd: string; // 출원일자
+  quote: number; // 인용횟수
+  summary: string; // 특허요약
 }
 
-
-async function crawlWebsiteWithPost(corp_no: string, /*postData: any*/): Promise<void> {
+async function crawlWebsiteWithPost(corp_no: string): Promise<void> {
   try {
 
-
-    const content: Record<string, Record<string, string>> = {};
-
+    // 요청 파라미터
     const param = new URLSearchParams();
     param.set('queryText', `RG=[${corp_no}]`);
-
     param.set('searchInResultCk', 'undefined');
-
     param.set('next', 'MainList');
     param.set('config', 'G1111111111111111111111S111111111000000000');
     param.set('sortField', 'RANK');
@@ -36,14 +31,11 @@ async function crawlWebsiteWithPost(corp_no: string, /*postData: any*/): Promise
     param.set('currentPage', '1');
     param.set('beforeExpression', `RG=[${corp_no}]`);
     param.set('userInput', `${corp_no}`);
-
     param.set('searchInTrans', 'null');
-
     param.set('logFlag', 'Y');
     param.set('searchSaveCnt', '0');
     param.set('SEL_PAT', 'KPAT');
     param.set('strstat', 'SMART|RG|');
-
     param.set('searchInTransCk', 'undefined');
 
     const result = await axios({
@@ -66,12 +58,10 @@ async function crawlWebsiteWithPost(corp_no: string, /*postData: any*/): Promise
 
     const html = result?.data;
     const root = parse(html);
-
-    console.log(root.querySelectorAll('article').length);
-
     const rows: patent[] = [];
 
 
+    //html parsing
     root.querySelectorAll('article')
       .map((pat) => {
         const input = pat.querySelector('input');
@@ -90,17 +80,16 @@ async function crawlWebsiteWithPost(corp_no: string, /*postData: any*/): Promise
         const date = lis[1]?.querySelector('a')?.text?.trim().slice(15,25);
 
         const row:patent = {
-          company: holder ?? '',
-          corp_no : corp_no ?? '',
-          title: title ?? '',
-          application_number: applicationNumber ?? '',
-          application_date_ymd: date ?? '',
-          quote: quote ?? 0,
-          summary: summary ?? '',
+          company: holder ?? '', //회사명
+          corp_no : corp_no ?? '', //법인번호
+          title: title ?? '', //특허명
+          application_number: applicationNumber ?? '', //출원번호
+          application_date_ymd: date ?? '', //출원일
+          quote: quote ?? 0, //인용횟수
+          summary: summary ?? '', //특허 요약
         };
         rows.push(row);
       });
-
 
     const pool = await createConnection({
       host: 'localhost',
