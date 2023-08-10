@@ -26,7 +26,7 @@ async function crawlWebsiteWithPost(corp_no: string): Promise<void> {
     param.set('configChange', 'Y');
     param.set('expression', `RG=[${corp_no}]`);
     param.set('historyQuery', `RG=[${corp_no}]`);
-    param.set('numPerPage', '30');
+    param.set('numPerPage', '100');
     param.set('numPageLinks', '10');
     param.set('currentPage', '1');
     param.set('beforeExpression', `RG=[${corp_no}]`);
