@@ -79,15 +79,15 @@ async function crawlWebsiteWithPost(corp_no: string, /*postData: any*/): Promise
         const applicationNumber = input?.attributes.value;
 
         const fonts = pat.querySelectorAll('font');
-        const holder = fonts[fonts.length - 1].attributes.title;
+        const holder = fonts[fonts.length - 1]?.attributes.title;
 
         const divs = pat.querySelectorAll('div');
-        const summary = divs[5].text.trim();
+        const summary = divs[5]?.text?.trim();
 
         const lis = pat.querySelectorAll('li');
-        const quote = Number(lis[lis.length - 1].querySelector('a')?.text.trim()) || 0;
+        const quote = Number(lis[lis.length - 1]?.querySelector('a')?.text?.trim()) || 0;
 
-        const date = lis[1].querySelector('a')?.text.trim().slice(15,25);
+        const date = lis[1]?.querySelector('a')?.text?.trim().slice(15,25);
 
         const row:patent = {
           company: holder ?? '',
