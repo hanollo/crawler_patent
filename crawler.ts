@@ -69,7 +69,7 @@ async function crawlWebsiteWithPost(corp_no: string): Promise<void> {
         const applicationNumber = input?.attributes.value;
 
         const fonts = pat.querySelectorAll('font');
-        const holder = fonts[fonts.length - 1]?.attributes.title;
+        const company = fonts[fonts.length - 1]?.attributes.title;
 
         const divs = pat.querySelectorAll('div');
         const summary = divs[5]?.text?.trim();
@@ -80,7 +80,7 @@ async function crawlWebsiteWithPost(corp_no: string): Promise<void> {
         const date = lis[1]?.querySelector('a')?.text?.trim().slice(15,25);
 
         const row:patent = {
-          company: holder ?? '', //회사명
+          company: company ?? '', //회사명
           corp_no : corp_no ?? '', //법인번호
           title: title ?? '', //특허명
           application_number: applicationNumber ?? '', //출원번호
