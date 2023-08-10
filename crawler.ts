@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { parse } from 'node-html-parser';
 import { mysqlConnect } from './connect';
+import sleep from 'sleep-promise';
 
 interface patent {
   company: string; // 회사명
@@ -104,7 +105,7 @@ async function crawlWebsiteWithPost(corp_no: string): Promise<void> {
     }).catch((error) => {
       console.error('Error inserting rows:', error);
     });
-
+    await sleep(500);
     await pool.end();
   } catch (error) {
     console.error('Error:', error);
