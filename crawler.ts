@@ -138,7 +138,6 @@ const search_companies : patent[] =[
     corp_no: "1101114834853",
   }
 ];
-
 search_companies.forEach(search_company => {
   crawlWebsiteWithPost(search_company);
 })
