@@ -92,6 +92,7 @@ async function crawlWebsiteWithPost(corp_no: string): Promise<void> {
         rows.push(row);
       });
 
+    //DB : 테스트DB/backend/kipris_patent_list
     const pool = await mysqlConnect();
 
     async function insertRows() {
